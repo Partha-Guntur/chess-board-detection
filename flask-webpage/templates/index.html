@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chessboard and Pieces Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            width: 60%;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input[type="file"] {
+            margin: 10px 0;
+        }
+        .result {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .result img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            padding: 5px;
+            background-color: #fff;
+        }
+        .lichess-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .lichess-button button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .lichess-button button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Chessboard and Chess Pieces Detection</h1>
+    
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <label for="image">Upload an image:</label><br>
+            <input type="file" name="image" id="image" accept="image/*" required><br>
+            <button type="submit">Upload</button>
+        </form><br>
+
+        <h1>Upload Chess PDF</h1>
+        <form action="{{ url_for('upload_pdf') }}" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <button type="submit">Upload PDF</button>
+        </form>
+
+        {% if prediction %}
+        <div class="result">
+            <h2>Prediction Result: {{ prediction }}</h2>
+        </div>
+        {% endif %}
+
+    {% if chessboards %}
+    <h2>Detected Chess Boards</h2>
+    <table border="1">
+        <tr>
+            <th>Chessboard Image</th>
+            <th>Action</th>
+        </tr>
+        {% for chessboard in chessboards %}
+        <tr>
+            <td><img src="{{ url_for('static', filename='detected/' + chessboard) }}" alt="{{ chessboard }}" width="100"></td>
+            <td>
+                <form action="{{ url_for('open_lichess', filename=chessboard) }}" method="POST">
+                    <button type="submit">Open in Lichess</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    {% if detection_result %}
+        <div class="result">
+            <h2>{{ detection_result }}</h2>
+            <img src="{{ url_for('static', filename=image_path) }}" alt="Detected Chess Pieces">
+        </div>
+        <div class="lichess-button">
+            <form action="/open_lichess" method="post" target="_blank">
+                <input type="hidden" name="pgn" value="{{ pgn }}">
+                <button type="submit">Open in Lichess Playground</button>
+            </form>
+        </div>        
+        {% endif %}
+    </div>
+    <script>
+        document.querySelector('form').onsubmit = function() {
+            setTimeout(function() {
+                document.querySelector('form').reset();
+            }, 1000);
+        };
+    </script>
+    
+</body>
+</html>

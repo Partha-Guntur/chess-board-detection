@@ -1,0 +1,14 @@
+train: E:\New Folder\roboflow\train\images
+val: E:\New Folder\roboflow\valid\images
+test: E:\New Folder\roboflow\test\images
+
+nc: 13
+names: ['B', 'K', 'N', 'P', 'Q', 'R', 'b', 'board', 'k', 'n', 'p', 'q', 'r']
+
+roboflow:
+  workspace: rohan-vij-iipji
+  project: chess-piece-detection-lnpzs
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/rohan-vij-iipji/chess-piece-detection-lnpzs/dataset/1
+

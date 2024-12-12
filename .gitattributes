@@ -1,0 +1,4 @@
+yolov8_custom.pt filter=lfs diff=lfs merge=lfs -text
+yolov8m.pt filter=lfs diff=lfs merge=lfs -text
+train.zip filter=lfs diff=lfs merge=lfs -text
+train2.zip filter=lfs diff=lfs merge=lfs -text
